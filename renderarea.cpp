@@ -41,10 +41,15 @@ void RenderArea::paintEvent(QPaintEvent* /* event */)
     int radius = 200;
     int arrowLength = 10;
 
-    int sinScaled = halfHeight - static_cast<int>(radius * sin(mAngle));
-    int cosScaled = halfWidth + static_cast<int>(radius * cos(mAngle));
-    int cscScaled = halfHeight - static_cast<int>(radius * (1.0 / sin(mAngle)));
-    int secScaled = halfWidth + static_cast<int>(radius * (1.0 / cos(mAngle)));
+    int sinVal = static_cast<int>(radius * sin(mAngle));
+    int cosVal = static_cast<int>(radius * cos(mAngle));
+    int cscVal = static_cast<int>(radius * (1.0 / sin(mAngle)));
+    int secVal = static_cast<int>(radius * (1.0 / cos(mAngle)));
+
+    int sinScaled = halfHeight - sinVal;
+    int cosScaled = halfWidth + cosVal;
+    int cscScaled = halfHeight - cscVal;
+    int secScaled = halfWidth + secVal;
 
     QPainter painter(this);
     painter.setRenderHints(QPainter::Antialiasing);
@@ -71,13 +76,13 @@ void RenderArea::paintEvent(QPaintEvent* /* event */)
     painter.drawLine(cosScaled, halfHeight, cosScaled, sinScaled);
     painter.setPen(QColor("blue"));
     painter.drawLine(halfWidth, sinScaled, cosScaled, sinScaled);
-    painter.setPen(QColor("green"));
+    painter.setPen(QColor("darkYellow"));
     painter.drawLine(cosScaled, sinScaled, secScaled, halfHeight);
     painter.setPen(QColor("magenta"));
     painter.drawLine(halfWidth, halfHeight, halfWidth, cscScaled);
     painter.setPen(QColor("cyan"));
     painter.drawLine(halfWidth, halfHeight, secScaled, halfHeight);
-    painter.setPen(QColor("yellow"));
+    painter.setPen(QColor("green"));
     painter.drawLine(halfWidth, cscScaled, cosScaled, sinScaled);
 
     /* Angle markings */
@@ -97,6 +102,14 @@ void RenderArea::paintEvent(QPaintEvent* /* event */)
         cosScaled - cosAngScaled - sinAngScaled, sinScaled + sinAngScaled - cosAngScaled);
     painter.drawLine(cosScaled - cosAngScaled - sinAngScaled, sinScaled + sinAngScaled - cosAngScaled,
         cosScaled - sinAngScaled, sinScaled - cosAngScaled);
+
+    /* Text */
+    painter.setFont(QFont("sans-serif", 10, QFont::Normal, false));
+    painter.setPen(QColor("red"));
+    painter.drawText(halfWidth + cosVal + 4, halfHeight - (sinVal / 2) - 7, 30, 14, static_cast<int>(Qt::AlignCenter), "sin");
+    painter.setPen(QColor("blue"));
+    painter.drawText(halfWidth + (cosVal / 2) - 15, sinScaled - 18, 30, 14, static_cast<int>(Qt::AlignCenter), "cos");
+
 
     /* Background */
     painter.setPen(palette().dark().color());

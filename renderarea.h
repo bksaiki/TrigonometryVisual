@@ -18,6 +18,13 @@
 #include <QPainter>
 #include <QWidget>
 
+/* Restricts a value within a certain range */
+template <typename T>
+const T& clamp(const T& value, const T& low, const T& high)
+{
+    return (value < low) ? low : (value > high) ? high : value;
+}
+
 /* Implements a QWidget that draws the unit circle and lines corresponding
    to the trigonometric functions */
 class RenderArea : public QWidget

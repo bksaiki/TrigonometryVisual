@@ -14,13 +14,23 @@
 
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent)
 {
+    renderArea = new RenderArea(this);
 
+    mainLayout = new QGridLayout;
+    mainLayout->addWidget(renderArea, 0, 0, 1, 1);
+
+    centralWidget = new QWidget;
+    centralWidget->setLayout(mainLayout);
+
+    setCentralWidget(centralWidget);
+    setWindowTitle("Trigonometry Visual");
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 MainWindow::~MainWindow()
 {
-
+    delete renderArea;
 }

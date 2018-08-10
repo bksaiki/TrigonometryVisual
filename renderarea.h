@@ -23,14 +23,28 @@
 class RenderArea : public QWidget
 {
 public:
-
     /* Default constructor. Initializes widgets */
     explicit RenderArea(QWidget* parent = nullptr);
 
-protected:
+    /* Explicit overridden destructor */
+    ~RenderArea() override {}
 
+    /* Returns the angle of the line on the unit circle */
+    inline double getAngle() { return mAngle; }
+
+    /* Sets the angle of the line on the unit circle */
+    inline void setAngle(double angle)
+    {
+        mAngle = angle;
+        update();
+    }
+
+protected:
     /* Draws */
     void paintEvent(QPaintEvent* event) override;
+
+private:
+    double mAngle;
 };
 
 #endif // RENDERAREA_H

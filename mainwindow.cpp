@@ -17,20 +17,21 @@
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent)
 {
-    renderArea = new RenderArea(this);
+    mRenderArea = new RenderArea(this);
+    mRenderArea->setAngle(M_PI / 4);
 
-    mainLayout = new QGridLayout;
-    mainLayout->addWidget(renderArea, 0, 0, 1, 1);
+    mMainLayout = new QGridLayout;
+    mMainLayout->addWidget(mRenderArea, 0, 0, 1, 1);
 
-    centralWidget = new QWidget;
-    centralWidget->setLayout(mainLayout);
+    mCentralWidget = new QWidget;
+    mCentralWidget->setLayout(mMainLayout);
 
-    setCentralWidget(centralWidget);
+    setCentralWidget(mCentralWidget);
     setWindowTitle("Trigonometry Visual");
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 MainWindow::~MainWindow()
 {
-    delete renderArea;
+    delete mCentralWidget;
 }

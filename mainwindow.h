@@ -28,9 +28,9 @@ public:
     ~MainWindow();
 
 private:
-    QGridLayout*    mainLayout;
-    QWidget*        centralWidget;
-    RenderArea*     renderArea;
+    QGridLayout*    mMainLayout;
+    QWidget*        mCentralWidget;
+    RenderArea*     mRenderArea;
 
 };
 

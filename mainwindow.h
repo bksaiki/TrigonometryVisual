@@ -23,7 +23,15 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-    const int mLabelCount = 7;
+    enum AngleType
+    {
+        DEGREES = 0,
+        RADIANS,
+        RADIANS2,
+        GRADIANS
+    };
+
+    const int mLabelCount = 8;
     const int mValueCount = 6;
     const QString mVersionIdentifier = "1.0.0";
 
@@ -38,13 +46,23 @@ private slots:
     /* Updates the render area */
     void inputAngleChanged();
 
+    /* Changes degree type */
+    void angleTypeChanged();
+
 private:
+    /* Helper function */
+    double toRadians(double value, MainWindow::AngleType currentAngleType);
+
+private:
+    QComboBox*      mAngleTypeComboBox;
     QGridLayout*    mMainLayout;
-    QLineEdit*      mInputAngle;
-    QLabel*         mLabels[7];
+    QGridLayout*    mTableLayout;
+    QLineEdit*      mInputAngleLineEdit;
+    QLabel*         mLabels[8];
     QLabel*         mValues[6];
     QWidget*        mCentralWidget;
 
+    AngleType       mAngleType;
     RenderArea*     mRenderArea;
 };
 

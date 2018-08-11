@@ -42,6 +42,9 @@ public:
     /* Destructor. Destroys all widgets */
     ~MainWindow();
 
+    /* Centers this widget */
+    void centerWindow(QApplication* app);
+
 private slots:
     /* Updates the render area */
     void inputAngleChanged();

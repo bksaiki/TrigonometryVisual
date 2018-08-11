@@ -85,13 +85,17 @@ MainWindow::MainWindow(QWidget* parent) :
 
     setCentralWidget(mCentralWidget);
     setWindowTitle("Trigonometry Visual v" + mVersionIdentifier);
-    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), QApplication::desktop()->availableGeometry(mCentralWidget)));
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 MainWindow::~MainWindow()
 {
     delete mCentralWidget;
+}
+
+void MainWindow::centerWindow(QApplication* app)
+{
+    setGeometry(QStyle::alignedRect(Qt::LeftToRight, Qt::AlignCenter, size(), app->desktop()->availableGeometry(mCentralWidget)));
 }
 
 void MainWindow::inputAngleChanged()

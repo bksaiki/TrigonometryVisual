@@ -19,7 +19,8 @@ MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent)
 {
     mMainLayout = new QGridLayout;
-    mMainLayout->setSpacing(15);
+    mMainLayout->setContentsMargins(30, 0, 0, 10);
+    mMainLayout->setVerticalSpacing(20);
 
     mRenderArea = new RenderArea(this);
     mRenderArea->setAngle(M_PI / 4);
@@ -67,7 +68,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(mInputAngle, SIGNAL(textEdited(const QString&)), this, SLOT(inputAngleChanged()));
 
     setCentralWidget(mCentralWidget);
-    setWindowTitle("Trigonometry Visual");
+    setWindowTitle("Trigonometry Visual v" + mVersionIdentifier);
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 

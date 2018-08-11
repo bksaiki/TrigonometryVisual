@@ -105,30 +105,67 @@ void RenderArea::paintEvent(QPaintEvent* /* event */)
     painter.drawLine(cosScaled - cosAngScaled - sinAngScaled, sinScaled + sinAngScaled - cosAngScaled,
         cosScaled - sinAngScaled, sinScaled - cosAngScaled);
 
-    /* Text (sin, cos, csc, sec) */
+    /* Text (sin, cos, sec) */
     painter.setFont(QFont("sans-serif", 10, QFont::Normal, false));
     painter.setPen(QColor("red"));
-    painter.drawText(halfWidth + cosVal + 4, halfHeight - (sinVal / 2) - 7, 30, 14, static_cast<int>(Qt::AlignCenter), "sin");
+    painter.drawText(halfWidth + cosVal + (std::signbit(cosVal) ? -32 : 4), halfHeight - (sinVal / 2) - 7, 30, 14,
+        static_cast<int>(Qt::AlignCenter), "sin");
     painter.setPen(QColor("blue"));
-    painter.drawText(halfWidth + (cosVal / 2) - 15, sinScaled - 18, 30, 14, static_cast<int>(Qt::AlignCenter), "cos");
-    painter.setPen(QColor("magenta"));
-    painter.drawText(halfWidth + (std::signbit(cosVal) ? 4 : -32), halfHeight - clamp(cscVal, -375, 375) / 2,
-        30, 14, static_cast<int>(Qt::AlignCenter), "csc");
+    painter.drawText(halfWidth + (cosVal / 2) - 15, sinScaled - (std::signbit(sinVal) ? -4: 18), 30, 14, static_cast<int>(Qt::AlignCenter), "cos");
     painter.setPen(QColor("cyan"));
     painter.drawText(halfWidth + clamp(secVal, -375, 375) / 2 - 15, halfHeight + (std::signbit(sinVal) ? -18 : 4),
         30, 14, static_cast<int>(Qt::AlignCenter), "sec");
 
-    /* Text (tan, cot) */
-    painter.setPen(QColor(180, 140, 100));
-    if(secVal > 750)
+    /* Text (csc) */
+    painter.setPen(QColor("magenta"));
+    if(sinVal == 0.0)
     {
-        painter.drawText(halfWidth + cosSign * 188, halfHeight - sinSign * (200 - static_cast<int>((1.0 / tan(mAngle)) * 188)) -
-            (std::signbit(sinVal) ? -18 : 18), 30, 14, static_cast<int>(Qt::AlignCenter), "tan");
+        painter.drawText(halfWidth - 32, halfHeight - 190, 30, 14, static_cast<int>(Qt::AlignCenter), "csc");
     }
     else
     {
-        painter.drawText(halfWidth + (clamp(static_cast<int>(secVal - cosVal), -375, 375) / 2) + cosVal + (std::signbit(cosVal) ? -40 : 10),
-            halfHeight - (clamp(sinVal, -375, 375) / 2) - (std::signbit(sinVal) ? -28 : 10), 30, 14, static_cast<int>(Qt::AlignCenter), "tan");
+        painter.drawText(halfWidth + (std::signbit(cosVal) ? 4 : -32), halfHeight - clamp(cscVal, -375, 375) / 2,
+            30, 14, static_cast<int>(Qt::AlignCenter), "csc");
+    }
+
+    /* Text (tan) */
+    painter.setPen(QColor(180, 140, 100));
+    if(cosVal == 0.0)
+    {
+        painter.drawText(halfWidth - 200, halfHeight - (std::signbit(sinVal) ? -205 : 218), 30, 14,
+            static_cast<int>(Qt::AlignCenter), "tan");
+    }
+    else if(secVal < -375 || secVal > 375)
+    {
+        painter.drawText(halfWidth + (std::signbit(cosVal) ? -210: 190), halfHeight - (sinSign * (abs(cscVal) -
+            static_cast<int>(fabs(1.0 / tan(mAngle)) * 188))) - (std::signbit(sinVal) ? -4 : 22), 30, 14,
+            static_cast<int>(Qt::AlignCenter), "tan");
+    }
+    else
+    {
+        painter.drawText(halfWidth + (clamp(static_cast<int>(secVal - cosVal), -375, 375) / 2) + cosVal +
+            (std::signbit(cosVal) ? -30 : 10), halfHeight - (clamp(sinVal, -375, 375) / 2) - (std::signbit(sinVal) ? -4 : 10),
+            30, 14, static_cast<int>(Qt::AlignCenter), "tan");
+    }
+
+    /* Text (cot) */
+    painter.setPen(QColor("green"));
+    if(sinVal == 0.0)
+    {
+        painter.drawText(halfWidth + (std::signbit(cosVal) ? -230 : 200), halfHeight - 190, 30, 14,
+            static_cast<int>(Qt::AlignCenter), "cot");
+    }
+    else if(cscVal < -375 || cscVal > 375)
+    {
+        painter.drawText(halfWidth + (cosSign * (abs(secVal) - static_cast<int>(fabs(tan(mAngle)) * 188))) +
+            (std::signbit(cosVal) ? -28 : 0), halfHeight - (std::signbit(sinVal) ? -190 : 210), 30, 14,
+            static_cast<int>(Qt::AlignCenter), "cot");
+    }
+    else
+    {
+        painter.drawText(halfWidth + (clamp(cosVal, -375, 375) / 2) + (std::signbit(cosVal) ? -20 : -10), halfHeight -
+            (clamp(static_cast<int>(cscVal - sinVal), -375, 375) / 2) - sinVal - (std::signbit(sinVal) ? -10 : 25),
+            30, 14, static_cast<int>(Qt::AlignCenter), "cot");
     }
 
     /* Background */

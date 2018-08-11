@@ -19,12 +19,13 @@
 #include <QtWidgets>
 #include "renderarea.h"
 
-static const int mLabelCount = 7;
-static const int mValueCount = 6;
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+    const int mLabelCount = 7;
+    const int mValueCount = 6;
+    const QString mVersionIdentifier = "1.0.0";
 
 public:
     /* Default constructor. Creates all widgets */

@@ -21,30 +21,59 @@ MainWindow::MainWindow(QWidget* parent) :
     mRenderArea = new RenderArea(this);
     mRenderArea->setAngle(M_PI / 4);
 
-    mTableLayout = new QGridLayout;
-    mTableLayout->setHorizontalSpacing(40);
-    mTableLayout->setVerticalSpacing(40);
-    mTableLayout->setContentsMargins(0, 200, 0, 200);
+    mAngleTableLayout = new QGridLayout;
+    mAngleTableLayout->setHorizontalSpacing(40);
+    mAngleTableLayout->setVerticalSpacing(40);
 
-    for(int i = 0; i < mLabelCount; ++i)
+    mValueTableLayout = new QGridLayout;
+    mValueTableLayout->setHorizontalSpacing(40);
+    mValueTableLayout->setVerticalSpacing(40);
+
+    mEquivalentTableLayout = new QGridLayout;
+    mEquivalentTableLayout->setHorizontalSpacing(40);
+    mEquivalentTableLayout->setVerticalSpacing(40);
+
+    for(int i = 0; i < 2; ++i)
     {
         mLabels[i] = new QLabel;
-        mTableLayout->addWidget(mLabels[i], i, 0, 1, 1);
+        mAngleTableLayout->addWidget(mLabels[i], i, 0, 1, 1);
+    }
+
+    for(int i = 2; i < 6; ++i)
+    {
+        mLabels[i] = new QLabel;
+        mEquivalentTableLayout->addWidget(mLabels[i], i - 2, 0, 1, 1);
+    }
+
+    for(int i = 6; i < 12; ++i)
+    {
+        mLabels[i] = new QLabel;
+        mValueTableLayout->addWidget(mLabels[i], i - 2, 0, 1, 1);
     }
 
     mLabels[0]->setText("Angle Type:");
     mLabels[1]->setText("Angle:");
-    mLabels[2]->setText("Sine:");
-    mLabels[3]->setText("Cosine:");
-    mLabels[4]->setText("Tangent:");
-    mLabels[5]->setText("Cosecant:");
-    mLabels[6]->setText("Secant:");
-    mLabels[7]->setText("Cotangent:");
+    mLabels[2]->setText("Degrees:");
+    mLabels[3]->setText("Radians:");
+    mLabels[4]->setText("Radians (terms of pi):");
+    mLabels[5]->setText("Gradians:");
+    mLabels[6]->setText("Sine:");
+    mLabels[7]->setText("Cosine:");
+    mLabels[8]->setText("Tangent:");
+    mLabels[9]->setText("Cosecant:");
+    mLabels[10]->setText("Secant:");
+    mLabels[11]->setText("Cotangent:");
 
-    for(int i = 0; i < mValueCount; ++i)
+    for(int i = 0; i < 4; ++i)
     {
         mValues[i] = new QLabel;
-        mTableLayout->addWidget(mValues[i], i + 2, 1, 1, 1);
+        mEquivalentTableLayout->addWidget(mValues[i], i, 1, 1, 1);
+    }
+
+    for(int i = 4; i < 10; ++i)
+    {
+        mValues[i] = new QLabel;
+        mValueTableLayout->addWidget(mValues[i], i, 1, 1, 1);
     }
 
     mAngleTypeComboBox = new QComboBox;
@@ -52,30 +81,52 @@ MainWindow::MainWindow(QWidget* parent) :
     mAngleTypeComboBox->addItem("Radians");
     mAngleTypeComboBox->addItem("Radians (multiples of pi)");
     mAngleTypeComboBox->addItem("Gradians");
-    mTableLayout->addWidget(mAngleTypeComboBox, 0, 1, 1, 1);
+    mAngleTableLayout->addWidget(mAngleTypeComboBox, 0, 1, 1, 1);
     mAngleType = DEGREES;
 
     mInputAngleLineEdit = new QLineEdit;
     mInputAngleLineEdit->setFixedWidth(75);
     mInputAngleLineEdit->setValidator(new QDoubleValidator(mInputAngleLineEdit));
     mInputAngleLineEdit->setText("45.0");
-    mTableLayout->addWidget(mInputAngleLineEdit, 1, 1, 1, 1);
+    mAngleTableLayout->addWidget(mInputAngleLineEdit, 1, 1, 1, 1);
 
-    double sinValue = sin(M_PI / 4);
-    double cosValue = cos(M_PI / 4);
-    double tanValue = tan(M_PI / 4);
+    double angle = M_PI / 4;
+    double sinValue = sin(angle);
+    double cosValue = cos(angle);
+    double tanValue = tan(angle);
 
-    mValues[0]->setText(QString::number(sinValue, 'f', 6));
-    mValues[1]->setText(QString::number(cosValue, 'f', 6));
-    mValues[2]->setText(QString::number(tanValue, 'f', 6));
-    mValues[3]->setText(QString::number(1.0 / sinValue, 'f', 6));
-    mValues[4]->setText(QString::number(1.0 / cosValue, 'f', 6));
-    mValues[5]->setText(QString::number(1.0 / tanValue, 'f', 6));
+    mValues[0]->setText(QString::number(angle * 180.0 / M_PI, 'f', 6));
+    mValues[1]->setText(QString::number(angle, 'f', 6));
+    mValues[2]->setText(QString::number(angle / M_PI, 'f', 6));
+    mValues[3]->setText(QString::number(angle * 200.0 / M_PI, 'f', 6));
+    mValues[4]->setText(QString::number(sinValue, 'f', 6));
+    mValues[5]->setText(QString::number(cosValue, 'f', 6));
+    mValues[6]->setText(QString::number(tanValue, 'f', 6));
+    mValues[7]->setText(QString::number(1.0 / sinValue, 'f', 6));
+    mValues[8]->setText(QString::number(1.0 / cosValue, 'f', 6));
+    mValues[9]->setText(QString::number(1.0 / tanValue, 'f', 6));
+
+    mAngleGroup = new QGroupBox;
+    mAngleGroup->setLayout(mAngleTableLayout);
+
+    mEquivalentGroup = new QGroupBox;
+    mEquivalentGroup->setLayout(mEquivalentTableLayout);
+
+    mValueGroup = new QGroupBox;
+    mValueGroup->setLayout(mValueTableLayout);
+
+    mVerticalLayout = new QVBoxLayout;
+    mVerticalLayout->setContentsMargins(0, 0, 0, 75);
+    mVerticalLayout->setSpacing(20);
+    mVerticalLayout->addWidget(mAngleGroup, 1);
+    mVerticalLayout->addWidget(mEquivalentGroup, 1);
+    mVerticalLayout->addWidget(mValueGroup, 1);
 
     mMainLayout = new QGridLayout;
-    mMainLayout->setHorizontalSpacing(40);
+    mMainLayout->setContentsMargins(20, 20, 20, 20);
+    mMainLayout->setHorizontalSpacing(20);
     mMainLayout->addWidget(mRenderArea, 0, 0, 1, 1);
-    mMainLayout->addLayout(mTableLayout, 0, 1, 1, 1);
+    mMainLayout->addLayout(mVerticalLayout, 0, 1, 1, 1);
 
     mCentralWidget = new QWidget;
     mCentralWidget->setLayout(mMainLayout);
@@ -84,7 +135,7 @@ MainWindow::MainWindow(QWidget* parent) :
     connect(mAngleTypeComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(angleTypeChanged()));
 
     setCentralWidget(mCentralWidget);
-    setWindowTitle("Trigonometry Visual v" + mVersionIdentifier);
+    setWindowTitle("Trigonometry Visual " + mVersionIdentifier);
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
@@ -106,29 +157,35 @@ void MainWindow::inputAngleChanged()
     if(!validInput)
         return;
 
-    value = fmod(value, 360.0);
-    double sinValue = sin(toRadians(value, mAngleType));
-    double cosValue = cos(toRadians(value, mAngleType));
-    double tanValue = tan(toRadians(value, mAngleType));
-    mRenderArea->setAngle(toRadians(value, mAngleType));
+    double radians = toRadians(value, mAngleType);
+    mValues[0]->setText(QString::number(radians * 180.0 / M_PI, 'f', 6));
+    mValues[1]->setText(QString::number(radians, 'f', 6));
+    mValues[2]->setText(QString::number(radians / M_PI, 'f', 6));
+    mValues[3]->setText(QString::number(radians * 200.0 / M_PI, 'f', 6));
 
-    mValues[0]->setText(QString::number(sinValue, 'f', 6));
-    mValues[1]->setText(QString::number(cosValue, 'f', 6));
-    mValues[2]->setText(QString::number(tanValue, 'f', 6));
-    mValues[3]->setText(QString::number(1.0 / sinValue, 'f', 6));
-    mValues[4]->setText(QString::number(1.0 / cosValue, 'f', 6));
-    mValues[5]->setText(QString::number(1.0 / tanValue, 'f', 6));
+    double adjustedAngle = toRadians(fmod(value, 360.0), mAngleType);
+    double sinValue = sin(adjustedAngle);
+    double cosValue = cos(adjustedAngle);
+    double tanValue = tan(adjustedAngle);
+    mRenderArea->setAngle(adjustedAngle);
+
+    mValues[4]->setText(QString::number(sinValue, 'f', 6));
+    mValues[5]->setText(QString::number(cosValue, 'f', 6));
+    mValues[6]->setText(QString::number(tanValue, 'f', 6));
+    mValues[7]->setText(QString::number(1.0 / sinValue, 'f', 6));
+    mValues[8]->setText(QString::number(1.0 / cosValue, 'f', 6));
+    mValues[9]->setText(QString::number(1.0 / tanValue, 'f', 6));
 
     if(value == 0.0 || value == 180.0)
     {
-        mValues[3]->setText("undef");
-        mValues[5]->setText("undef");
+        mValues[7]->setText("undef");
+        mValues[9]->setText("undef");
     }
 
     if(value == 90.0 || value == 270.0)
     {
-        mValues[2]->setText("undef");
-        mValues[4]->setText("undef");
+        mValues[6]->setText("undef");
+        mValues[8]->setText("undef");
     }
 }
 

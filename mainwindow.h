@@ -31,9 +31,7 @@ class MainWindow : public QMainWindow
         GRADIANS
     };
 
-    const int mLabelCount = 8;
-    const int mValueCount = 6;
-    const QString mVersionIdentifier = "1.0.0";
+    const QString mVersionIdentifier = "1.0.1";
 
 public:
     /* Default constructor. Creates all widgets */
@@ -59,10 +57,16 @@ private:
 private:
     QComboBox*      mAngleTypeComboBox;
     QGridLayout*    mMainLayout;
-    QGridLayout*    mTableLayout;
+    QGridLayout*    mAngleTableLayout;
+    QGridLayout*    mEquivalentTableLayout;
+    QGridLayout*    mValueTableLayout;
+    QGroupBox*      mAngleGroup;
+    QGroupBox*      mEquivalentGroup;
+    QGroupBox*      mValueGroup;
     QLineEdit*      mInputAngleLineEdit;
-    QLabel*         mLabels[8];
-    QLabel*         mValues[6];
+    QLabel*         mLabels[12];
+    QLabel*         mValues[10];
+    QVBoxLayout*    mVerticalLayout;
     QWidget*        mCentralWidget;
 
     AngleType       mAngleType;

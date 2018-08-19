@@ -15,6 +15,7 @@
 #ifndef RENDERAREA_H
 #define RENDERAREA_H
 
+#include <math.h>
 #include <QPainter>
 #include <QWidget>
 

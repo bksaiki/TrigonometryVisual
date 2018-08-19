@@ -13,7 +13,6 @@
 */
 
 #include "mainwindow.h"
-#include <iostream>
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent)
@@ -116,7 +115,6 @@ MainWindow::MainWindow(QWidget* parent) :
     mValueGroup->setLayout(mValueTableLayout);
 
     mVerticalLayout = new QVBoxLayout;
-    mVerticalLayout->setContentsMargins(0, 0, 0, 75);
     mVerticalLayout->setSpacing(20);
     mVerticalLayout->addWidget(mAngleGroup, 1);
     mVerticalLayout->addWidget(mEquivalentGroup, 1);
@@ -124,7 +122,6 @@ MainWindow::MainWindow(QWidget* parent) :
 
     mMainLayout = new QGridLayout;
     mMainLayout->setContentsMargins(20, 20, 20, 20);
-    mMainLayout->setHorizontalSpacing(20);
     mMainLayout->addWidget(mRenderArea, 0, 0, 1, 1);
     mMainLayout->addLayout(mVerticalLayout, 0, 1, 1, 1);
 

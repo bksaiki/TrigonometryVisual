@@ -12,6 +12,7 @@
 	Main user interface window
 */
 
+#include <math.h>
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent) :

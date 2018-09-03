@@ -15,7 +15,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <math.h>
 #include <QMainWindow>
 #include <QtWidgets>
 #include "renderarea.h"
